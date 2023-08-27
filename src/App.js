@@ -12,17 +12,17 @@ import All from './All/All';
 function App() {
   return (
     // <Provider store={store}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/Register" element={<Register />} />
-          <Route path="/reset" element={<Reset />} />
-          <Route path="/NewPass/:ID" element={<NewPass />} />
-          <Route path="/home/all" element={<All />} />
-        </Routes>
-      </BrowserRouter>
+    <BrowserRouter basename="https://taskat.onrender.com">
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route index path="/login" element={<Login />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/Register" element={<Register />} />
+        <Route path="/reset" element={<Reset />} />
+        <Route path="/NewPass/:ID" element={<NewPass />} />
+        <Route path="/home/all" element={<All />} />
+      </Routes>
+    </BrowserRouter>
     // </Provider>
   );
 }
