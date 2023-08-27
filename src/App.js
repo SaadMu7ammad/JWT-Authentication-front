@@ -12,7 +12,8 @@ import All from './All/All';
 function App() {
   return (
     // <Provider store={store}>
-    <BrowserRouter >
+    <BrowserRouter basename="https://taskat.onrender.com">
+     
       <Routes>
         <Route index path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
