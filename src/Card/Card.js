@@ -16,9 +16,13 @@ function Card({ data }) {
 
   // }
   async function deleteTask(e) {
-    console.log(
-      e.target.closest('div.card').querySelector('input[type="hidden"]').value
-    );
+    // console.log(
+    //   e.target.closest('div.card').querySelector('input[type="hidden"]').value
+    // );
+    const userId = e.target
+      .closest('div.card')
+      .querySelector('input[type="hidden"]').value;
+    console.log(userId);
     const taskName = e.target
       .closest('.card')
       .querySelector('h3.card-title').textContent;
@@ -27,39 +31,45 @@ function Card({ data }) {
     try {
       const result = await axios.post(
         `http://localhost:8080/delete`,
-        { name: taskName },
+        { name: taskName, USER_ID: userId },
         { headers }
       );
       console.log(result.data);
       const newTasks = result.data;
       showTasks();
-      window.location.reload();
+      if (result.data !== 'you are not authrized to delete other tasks') {
+        window.location.reload();
+      }
+
       console.log(newTasks);
     } catch (err) {
       console.log(err);
     }
   }
   async function editTask(e) {
-    console.log(
-      e.target.closest('div.card').querySelector('input[type="hidden"]').value
-    );
+    const userId = e.target
+      .closest('div.card')
+      .querySelector('input[type="hidden"]').value;
     const taskName = e.target
       .closest('.card')
       .querySelector('h3.card-title').textContent;
-    const taskVal=prompt()
+    const taskVal = prompt();
     console.log(taskName);
     console.log(taskVal);
 
     try {
       const result = await axios.post(
         `http://localhost:8080/edit`,
-        { name: taskVal?taskVal:taskName ,Oldname: taskName},
+        { name: taskVal ? taskVal : taskName, Oldname: taskName,  USER_ID: userId },
         { headers }
       );
       console.log(result.data);
       const newTasks = result.data;
       showTasks();
-      window.location.reload();
+      if (result.data !== 'you are not authrized to edit other tasks') {
+        window.location.reload();
+      }
+      // window.location.reload();
       console.log(newTasks);
     } catch (err) {
       console.log(err);
@@ -80,8 +90,9 @@ function Card({ data }) {
       <h3 className="card-title">{data[0]}</h3>
       <p>added by {data[1]}</p>
       <div className="card-buttons">
-        
-        <button className="edit-button"onClick={editTask}>Edit</button>
+        <button className="edit-button" onClick={editTask}>
+          Edit
+        </button>
         <button className="delete-button" onClick={deleteTask}>
           Delete
         </button>

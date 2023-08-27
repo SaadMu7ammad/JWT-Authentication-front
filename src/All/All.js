@@ -50,6 +50,7 @@ function All() {
             //   console.log(item.task);
             item.task.forEach((element) => {
                 console.log(element);
+
                 newTemp.push(element)
             });
                 settemp([...newTemp])
