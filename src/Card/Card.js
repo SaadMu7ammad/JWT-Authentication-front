@@ -30,7 +30,7 @@ function Card({ data }) {
     console.log(taskName);
     try {
       const result = await axios.post(
-        `http://localhost:8080/delete`,
+        `https://texhnotes-api.onrender.com/delete`,
         { name: taskName, USER_ID: userId },
         { headers }
       );
@@ -78,7 +78,7 @@ function Card({ data }) {
   }
   async function showTasks() {
     try {
-      const result = await axios.get('http://localhost:8080/home', { headers });
+      const result = await axios.get('https://texhnotes-api.onrender.com/home', { headers });
       const newTasks = result.data;
       settemp(newTasks);
       console.log(newTasks);
