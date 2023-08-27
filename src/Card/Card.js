@@ -33,13 +33,37 @@ function Card({ data }) {
       console.log(result.data);
       const newTasks = result.data;
       showTasks();
-      // window.location.reload();
+      window.location.reload();
       console.log(newTasks);
     } catch (err) {
       console.log(err);
     }
   }
-
+  async function editTask(e) {
+    console.log(
+      e.target.closest('div.card').querySelector('input[type="hidden"]').value
+    );
+    const taskName = e.target
+      .closest('.card')
+      .querySelector('h3.card-title').textContent;
+    const taskVal=prompt()
+    console.log(taskName);
+    console.log(taskVal);
+    try {
+      const result = await axios.post(
+        `http://localhost:8080/edit`,
+        { name: taskVal ,Oldname: taskName},
+        { headers }
+      );
+      console.log(result.data);
+      const newTasks = result.data;
+      showTasks();
+      window.location.reload();
+      console.log(newTasks);
+    } catch (err) {
+      console.log(err);
+    }
+  }
   async function showTasks() {
     try {
       const result = await axios.get('http://localhost:8080/home', { headers });
@@ -55,7 +79,7 @@ function Card({ data }) {
       <h3 className="card-title">{data[0]}</h3>
       <p>added by {data[1]}</p>
       <div className="card-buttons">
-        <button className="edit-button">Edit</button>
+        <button className="edit-button"onClick={editTask}>Edit</button>
         <button className="delete-button" onClick={deleteTask}>
           Delete
         </button>
