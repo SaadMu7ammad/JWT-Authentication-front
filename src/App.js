@@ -5,6 +5,8 @@ import Register from './Register/Register';
 import Reset from './Reset/Reset';
 import NewPass from './NewPass/NewPass';
 import Home from './Home/Home';
+import Nav from './Nav/Nav';
+import All from './All/All';
 
 function App() {
   return (
@@ -16,6 +18,7 @@ function App() {
         <Route path="/Register" element={<Register />} />
         <Route path="/reset" element={<Reset />} />
         <Route path="/NewPass/:ID" element={<NewPass />} />
+        <Route path="/home/all" element={<All />} />
       </Routes>
     </BrowserRouter>
   );

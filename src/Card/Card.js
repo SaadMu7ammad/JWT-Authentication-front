@@ -49,10 +49,11 @@ function Card({ data }) {
     const taskVal=prompt()
     console.log(taskName);
     console.log(taskVal);
+
     try {
       const result = await axios.post(
         `http://localhost:8080/edit`,
-        { name: taskVal ,Oldname: taskName},
+        { name: taskVal?taskVal:taskName ,Oldname: taskName},
         { headers }
       );
       console.log(result.data);
@@ -79,6 +80,7 @@ function Card({ data }) {
       <h3 className="card-title">{data[0]}</h3>
       <p>added by {data[1]}</p>
       <div className="card-buttons">
+        
         <button className="edit-button"onClick={editTask}>Edit</button>
         <button className="delete-button" onClick={deleteTask}>
           Delete

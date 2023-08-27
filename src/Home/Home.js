@@ -6,7 +6,6 @@ import { useLocation } from 'react-router-dom';
 
 import axios from 'axios';
 function Home() {
-  const location = useLocation();
 
   const [taskVal, setTask] = useState('');
   const [temp, settemp] = useState([]);
@@ -54,6 +53,7 @@ function Home() {
   return (
     
     <div>
+      <Nav ></Nav>
       <button className="add" onClick={addTask}>
         add task
       </button>
@@ -68,7 +68,6 @@ function Home() {
         name="addTask"
         placeholder="enter a new task"
       ></input>
-      <Nav></Nav>
       <div className="taskCards">
         {temp.map((item, index) => (
           <Card key={index} data={[item.name,item.userName,item.id]} />
