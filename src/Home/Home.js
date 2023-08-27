@@ -3,6 +3,7 @@ import Card from '../Card/Card';
 import Nav from '../Nav/Nav';
 import './Home.css';
 import { useLocation } from 'react-router-dom';
+import openSocket from 'socket.io-client';
 
 import axios from 'axios';
 function Home() {
@@ -32,12 +33,20 @@ function Home() {
       const newTasks = result.data;
       settemp(newTasks);
       console.log(newTasks);
+      
     } catch (err) {
       console.log(err);
     }
   }
   // showTasks();
   useEffect(() => {
+    const socket = openSocket('http://localhost:8080'); // Connect to the Socket.IO server
+
+    socket.on('newTask', (newTask) => {
+      // Listen for a new task event from the server
+      console.log(newTask);
+      settemp((prevTemp) => [...prevTemp, newTask]);
+    });
     async function fetchTasks() {
       try {
         const result = await axios.get('http://localhost:8080/home', { headers });

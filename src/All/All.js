@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Card from '../Card/Card';
 import axios from 'axios';
 import Nav from '../Nav/Nav';
+import openSocket from 'socket.io-client';
 import '../Card/Card.css';
 function All() {
   const [taskVal, setTask] = useState('');
@@ -15,55 +16,65 @@ function All() {
   };
 
   // showTasks();
+  useEffect(() => {
+    const socket = openSocket('http://localhost:8080'); // Connect to the Socket.IO server
 
-  async function fetchTasks() {
+    socket.on('newTask', (newTask) => {
+      // Listen for a new task event from the server
+      console.log(newTask);
+      settemp((prevTemp) => [...prevTemp, newTask]);
+    });
+    async function fetchTasks() {
       try {
         const newTemp = []; // Create a new array to store the tasks
 
-          settemp([])
+        settemp([]);
         //   temp = [];
+        const result = await axios.get('http://localhost:8080/all', {
+          headers,
+        });
+        //   console.log(result.data);
+        result.data.map((item) => {
+          //   console.log(item.task);
+          item.task.forEach((element) => {
+            console.log(element);
+
+            newTemp.push(element);
+          });
+          settemp([...newTemp]);
+        });
+        // settemp(result.data);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    fetchTasks();
+  }, []);
+  async function fetchTasks() {
+    try {
+      const newTemp = []; // Create a new array to store the tasks
+
+      settemp([]);
+      //   temp = [];
       const result = await axios.get('http://localhost:8080/all', { headers });
       //   console.log(result.data);
-        result.data.map((item) => {
+      result.data.map((item) => {
         //   console.log(item.task);
         item.task.forEach((element) => {
-            console.log(element);
-            newTemp.push(element)
+          console.log(element);
+          newTemp.push(element);
         });
-            settemp([...newTemp])
+        settemp([...newTemp]);
+        openSocket('http://localhost:8080');
       });
       // settemp(result.data);
     } catch (err) {
       console.log(err);
     }
   }
-  useEffect(() => {
-    async function fetchTasks() {
-        try {
-            const newTemp = []; // Create a new array to store the tasks
-    
-              settemp([])
-            //   temp = [];
-          const result = await axios.get('http://localhost:8080/all', { headers });
-          //   console.log(result.data);
-            result.data.map((item) => {
-            //   console.log(item.task);
-            item.task.forEach((element) => {
-                console.log(element);
 
-                newTemp.push(element)
-            });
-                settemp([...newTemp])
-          });
-          // settemp(result.data);
-        } catch (err) {
-          console.log(err);
-        }
-    }
-    
-    fetchTasks();
-  }, []); 
-    return (
+  return (
     <div>
       {/* <button className="add" onClick={fetchTasks}>
         showTasks

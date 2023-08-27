@@ -56,23 +56,24 @@ function Card({ data }) {
     const taskVal = prompt();
     console.log(taskName);
     console.log(taskVal);
-
-    try {
-      const result = await axios.post(
-        `http://localhost:8080/edit`,
-        { name: taskVal ? taskVal : taskName, Oldname: taskName,  USER_ID: userId },
-        { headers }
-      );
-      console.log(result.data);
-      const newTasks = result.data;
-      showTasks();
-      if (result.data !== 'you are not authrized to edit other tasks') {
-        window.location.reload();
+    if (taskVal) {
+      try {
+        const result = await axios.post(
+          `http://localhost:8080/edit`,
+          { name: taskVal ? taskVal : taskName, Oldname: taskName, USER_ID: userId },
+          { headers }
+        );
+        console.log(result.data);
+        const newTasks = result.data;
+        showTasks();
+        if (result.data !== 'you are not authrized to edit other tasks') {
+          window.location.reload();
+        }
+        // window.location.reload();
+        console.log(newTasks);
+      } catch (err) {
+        console.log(err);
       }
-      // window.location.reload();
-      console.log(newTasks);
-    } catch (err) {
-      console.log(err);
     }
   }
   async function showTasks() {

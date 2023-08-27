@@ -7,6 +7,13 @@ function NewPass() {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const { ID } = useParams(); // Use useParams hook to extract the dynamic ID
+  const accessToken = localStorage.getItem('accessToken');
+  // console.log(accessToken);
+  const headers = {
+    // Define your headers here
+    Authorization: `Bearer ${accessToken}`,
+    // Add other headers if needed
+  };
   console.log(ID);
   async function changePass(e) {
     e.preventDefault();
@@ -14,7 +21,7 @@ function NewPass() {
     axios
       .post(`http://localhost:8080/reset/${ID}`, {
         password,
-      })
+      },{headers})
       .then((result) => {
         console.log(result.data);
         console.log('after login in front');
