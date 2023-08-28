@@ -19,7 +19,7 @@ function NewPass() {
     e.preventDefault();
 
     axios
-      .post(`https://texhnotes-api.onrender.com/reset/${ID}`, {
+      .post(`http://localhost:8080/reset/${ID}`, {
         password,
       },{headers})
       .then((result) => {

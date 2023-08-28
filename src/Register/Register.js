@@ -13,7 +13,7 @@ function Register() {
     e.preventDefault();
     if (email && password && fullName) {
       axios
-        .post('https://texhnotes-api.onrender.com/register', {
+        .post('http://localhost:8080/register', {
           email,
           password,
           fullName,
