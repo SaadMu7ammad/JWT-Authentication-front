@@ -19,7 +19,7 @@ function Home() {
   };
   function addTask() {
     axios
-      .post('https://master--taskatt.netlify.app/add', { name: taskVal }, { headers })
+      .post('https://taskat-xme4.onrender.com/add', { name: taskVal }, { headers })
       .then((result) => {
          showTasks();
       })
@@ -29,7 +29,7 @@ function Home() {
   }
   async function showTasks() {
     try {
-      const result = await axios.get('https://master--taskatt.netlify.app/home', { headers });
+      const result = await axios.get('https://taskat-xme4.onrender.com/home', { headers });
       const newTasks = result.data;
       settemp(newTasks);
       console.log(newTasks);
@@ -40,7 +40,7 @@ function Home() {
   }
   // showTasks();
   useEffect(() => {
-    // const socket = openSocket('https://master--taskatt.netlify.app'); // Connect to the Socket.IO server
+    // const socket = openSocket('https://taskat-xme4.onrender.com'); // Connect to the Socket.IO server
 
     // socket.on('newTask', (newTask) => {
     //   // Listen for a new task event from the server
@@ -49,7 +49,7 @@ function Home() {
     // });
     async function fetchTasks() {
       try {
-        const result = await axios.get('https://master--taskatt.netlify.app/home', { headers });
+        const result = await axios.get('https://taskat-xme4.onrender.com/home', { headers });
         console.log(result.data);
         settemp(result.data);
       } catch (err) {

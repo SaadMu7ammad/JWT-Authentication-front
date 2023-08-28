@@ -34,7 +34,7 @@ function Card({ data }) {
     console.log(taskName);
     try {
       const result = await axios.post(
-        `https://master--taskatt.netlify.app/delete`,
+        `https://taskat-xme4.onrender.com/delete`,
         { name: taskName, USER_ID: userId },
         { headers }
       );
@@ -65,7 +65,7 @@ function Card({ data }) {
     if (taskVal) {
       try {
         const result = await axios.post(
-          `https://master--taskatt.netlify.app/edit`,
+          `https://taskat-xme4.onrender.com/edit`,
           {
             name: taskVal ? taskVal : taskName,
             Oldname: taskName,
@@ -94,7 +94,7 @@ function Card({ data }) {
   }
   async function showTasks() {
     try {
-      const result = await axios.get('https://master--taskatt.netlify.app/home', { headers });
+      const result = await axios.get('https://taskat-xme4.onrender.com/home', { headers });
       const newTasks = result.data;
       settemp(newTasks);
       console.log(newTasks);

@@ -19,7 +19,7 @@ function NewPass() {
     e.preventDefault();
 
     axios
-      .post(`https://master--taskatt.netlify.app/${ID}`, {
+      .post(`https://taskat-xme4.onrender.com/${ID}`, {
         password,
       },{headers})
       .then((result) => {

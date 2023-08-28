@@ -13,7 +13,7 @@ function Register() {
     e.preventDefault();
     if (email && password && fullName) {
       axios
-        .post('https://master--taskatt.netlify.app/register', {
+        .post('https://taskat-xme4.onrender.com/register', {
           email,
           password,
           fullName,
