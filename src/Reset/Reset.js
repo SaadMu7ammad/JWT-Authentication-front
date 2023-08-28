@@ -7,7 +7,7 @@ function Reset() {
   function sendEmailReset(e) {
     e.preventDefault();
     axios
-      .post('https://taskat-xme4.onrender.com/reset',{email})
+      .post('http://localhost:8080/reset',{email})
       .then((result) => {
         console.log(result.data);
         navigate('/login')

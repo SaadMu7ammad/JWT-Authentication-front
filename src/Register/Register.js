@@ -13,7 +13,7 @@ function Register() {
     e.preventDefault();
     if (email && password && fullName) {
       axios
-        .post('https://taskat-xme4.onrender.com/register', {
+        .post('http://localhost:8080/Register', {
           email,
           password,
           fullName,

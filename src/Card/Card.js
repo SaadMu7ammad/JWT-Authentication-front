@@ -34,7 +34,7 @@ function Card({ data }) {
     console.log(taskName);
     try {
       const result = await axios.post(
-        `https://taskat-xme4.onrender.com/delete`,
+        `http://localhost:8080/delete`,
         { name: taskName, USER_ID: userId },
         { headers }
       );
@@ -42,8 +42,8 @@ function Card({ data }) {
       const newTasks = result.data;
       showTasks();
       if (result.data !== 'you are not authrized to delete other tasks') {
-        // window.location.reload();
-        navigate('/home/all');
+        window.location.reload();
+        // navigate('/home');
         // navigate('/home', { replace: true });
       }
 
@@ -65,7 +65,7 @@ function Card({ data }) {
     if (taskVal) {
       try {
         const result = await axios.post(
-          `https://taskat-xme4.onrender.com/edit`,
+          `http://localhost:8080/edit`,
           {
             name: taskVal ? taskVal : taskName,
             Oldname: taskName,
@@ -78,11 +78,11 @@ function Card({ data }) {
         showTasks();
         if (result.data !== 'you are not authrized to edit other tasks') {
           // window.location.reload();
-          navigate('/home/all');
+          // navigate('/home');
 
           // history.location.pathname = '/home';
           // history.replace(history.location.pathname); // Navigate to the same route
-          // window.location.reload(); // Reload the page
+          window.location.reload(); // Reload the page
           // navigate('/home', { replace: true });
         }
         // window.location.reload();
@@ -94,7 +94,7 @@ function Card({ data }) {
   }
   async function showTasks() {
     try {
-      const result = await axios.get('https://taskat-xme4.onrender.com/home', { headers });
+      const result = await axios.get('http://localhost:8080/home', { headers });
       const newTasks = result.data;
       settemp(newTasks);
       console.log(newTasks);
