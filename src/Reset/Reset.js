@@ -7,7 +7,7 @@ function Reset() {
   function sendEmailReset(e) {
     e.preventDefault();
     axios
-      .post('http://localhost:8080/reset',{email})
+      .post('https://master--taskatt.netlify.app/reset',{email})
       .then((result) => {
         console.log(result.data);
         navigate('/login')

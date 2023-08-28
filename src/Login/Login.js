@@ -14,7 +14,7 @@ function Login() {
   async function checkLogin(e) {
     e.preventDefault();
     axios
-      .post('http://localhost:8080/login', {
+      .post('https://master--taskatt.netlify.app/login', {
         email,
         password,
       })

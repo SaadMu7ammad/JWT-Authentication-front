@@ -17,7 +17,7 @@ function All() {
 
   // showTasks();
   useEffect(() => {
-    const socket = openSocket('http://localhost:8080'); // Connect to the Socket.IO server
+    const socket = openSocket('https://master--taskatt.netlify.app'); // Connect to the Socket.IO server
 
     socket.on('newTask', (newTask) => {
       // Listen for a new task event from the server
@@ -30,7 +30,7 @@ function All() {
 
         settemp([]);
         //   temp = [];
-        const result = await axios.get('http://localhost:8080/all', {
+        const result = await axios.get('https://master--taskatt.netlify.app/all', {
           headers,
         });
         //   console.log(result.data);
@@ -57,7 +57,7 @@ function All() {
 
       settemp([]);
       //   temp = [];
-      const result = await axios.get('http://localhost:8080/all', { headers });
+      const result = await axios.get('https://master--taskatt.netlify.app/all', { headers });
       //   console.log(result.data);
       result.data.map((item) => {
         //   console.log(item.task);
@@ -66,7 +66,7 @@ function All() {
           newTemp.push(element);
         });
         settemp([...newTemp]);
-        openSocket('http://localhost:8080');
+        openSocket('https://master--taskatt.netlify.app');
       });
       // settemp(result.data);
     } catch (err) {

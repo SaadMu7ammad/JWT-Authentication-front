@@ -19,7 +19,7 @@ function NewPass() {
     e.preventDefault();
 
     axios
-      .post(`http://localhost:8080/reset/${ID}`, {
+      .post(`https://master--taskatt.netlify.app/${ID}`, {
         password,
       },{headers})
       .then((result) => {
