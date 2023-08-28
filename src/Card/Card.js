@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import './Card.css';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function Card({ data }) {
   // console.log(data)
+  // const history = useHistory();
+
+  const navigate = useNavigate();
   const [temp, settemp] = useState([]);
   const accessToken = localStorage.getItem('accessToken');
   // console.log(accessToken);
@@ -39,6 +43,8 @@ function Card({ data }) {
       showTasks();
       if (result.data !== 'you are not authrized to delete other tasks') {
         // window.location.reload();
+        navigate('/home/all');
+        // navigate('/home', { replace: true });
       }
 
       console.log(newTasks);
@@ -72,6 +78,12 @@ function Card({ data }) {
         showTasks();
         if (result.data !== 'you are not authrized to edit other tasks') {
           // window.location.reload();
+          navigate('/home/all');
+
+          // history.location.pathname = '/home';
+          // history.replace(history.location.pathname); // Navigate to the same route
+          // window.location.reload(); // Reload the page
+          // navigate('/home', { replace: true });
         }
         // window.location.reload();
         console.log(newTasks);
