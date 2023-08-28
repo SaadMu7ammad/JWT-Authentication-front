@@ -38,7 +38,7 @@ function Card({ data }) {
       const newTasks = result.data;
       showTasks();
       if (result.data !== 'you are not authrized to delete other tasks') {
-        window.location.reload();
+        // window.location.reload();
       }
 
       console.log(newTasks);
@@ -60,14 +60,18 @@ function Card({ data }) {
       try {
         const result = await axios.post(
           `http://localhost:8080/edit`,
-          { name: taskVal ? taskVal : taskName, Oldname: taskName, USER_ID: userId },
+          {
+            name: taskVal ? taskVal : taskName,
+            Oldname: taskName,
+            USER_ID: userId,
+          },
           { headers }
         );
         console.log(result.data);
         const newTasks = result.data;
         showTasks();
         if (result.data !== 'you are not authrized to edit other tasks') {
-          window.location.reload();
+          // window.location.reload();
         }
         // window.location.reload();
         console.log(newTasks);
