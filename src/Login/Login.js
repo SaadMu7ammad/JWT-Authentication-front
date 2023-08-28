@@ -74,7 +74,7 @@ function Login() {
           Don't have an account? <Link to="/Register">Register here</Link>
         </div>
         <div className="switch">
-          Forgot password? <a href="/reset">Reset here</a>
+          Forgot password?<Link to="/Reset">Reset here</Link>
         </div>
       </div>
     </div>

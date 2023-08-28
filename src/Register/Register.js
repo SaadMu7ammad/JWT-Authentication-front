@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -25,7 +25,7 @@ function Register() {
             // navigate('/Register');
 
             setErr('block');
-            setMsg("email is used")
+            setMsg('email is used');
           }
 
           //   res.json(res)
@@ -38,7 +38,7 @@ function Register() {
   return (
     <div className="container">
       <div className="card">
-      <h2 style={{ display: err, color: 'red' }}>{msg}</h2>
+        <h2 style={{ display: err, color: 'red' }}>{msg}</h2>
 
         <h2>Register Form</h2>
         <form method="post">
@@ -78,7 +78,7 @@ function Register() {
         </form>
         <div className="switch">
           Already have an account?
-          <a href="/login">Login here</a>
+          <Link to="/login">Login here</Link>
         </div>
       </div>
     </div>
