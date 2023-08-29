@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import Card from '../Card/Card';
 import Nav from '../Nav/Nav';
 import './Home.css';
 import { useLocation } from 'react-router-dom';
+import { UseSelector } from 'react-redux/es/hooks/useSelector';
 // import openSocket from 'socket.io-client';
-
 import axios from 'axios';
 function Home() {
-
   const [taskVal, setTask] = useState('');
   const [temp, settemp] = useState([]);
   const accessToken = localStorage.getItem('accessToken');

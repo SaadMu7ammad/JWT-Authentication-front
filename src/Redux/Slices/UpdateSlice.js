@@ -1,25 +1,103 @@
-// // dataSlice.js
-// import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+// dataSlice.js
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 
-// // Create an async thunk for fetching data
-// export const fetchData = createAsyncThunk('data/fetchData', async () => {
-//   const response = await fetch('http://localhost:8080/all');
-//   const data = await response.json();
-//   return data;
-// });
+const accessToken = localStorage.getItem('accessToken');
 
-// // Create a slice
-// const updateSlice  = createSlice({
-//   name: 'data',
-//   initialState: {
-//     userTasks: [],
-//   },
-//   reducers: {},
-//   extraReducers: (builder) => {
-//     builder.addCase(fetchData.fulfilled, (state, action) => {
-//       state.userTasks = action.payload; // Update userTasks with fetched data
-//     });
-//   },
-// });
+const headers = {
+  // Define your headers here
+  Authorization: `Bearer ${accessToken}`,
+  // Add other headers if needed
+};
+// Create an async thunk for fetching data
+export const fetchData = createAsyncThunk('data/fetchData', async () => {
+  const response = await fetch('http://localhost:8080/all', { headers });
+  const data = await response.json();
+  return data;
+});
+// export const deleteData = (userId, taskName) =>
+//   createAsyncThunk('data/deleteData', async () => {
+//     const response = await axios.post(
+//       'http://localhost:8080/delete',
+//       { name: taskName, USER_ID: userId },
+//       { headers }
+//     );
+//     const data = await response.json();
+//     console.log(data);
+//     return data;
+//   });
 
-// export default updateSlice.reducer;
+export const deleteData = createAsyncThunk(
+  'data/deleteData',
+  async ({ userId, taskName }) => {
+    console.log(userId);
+    console.log(taskName);
+    const response = await axios.post(
+      'http://localhost:8080/delete',
+      { name: taskName, USER_ID: userId },
+      { headers }
+    );
+    const data = response.data;
+    console.log(data);
+    return data;
+  }
+);
+export const editData = createAsyncThunk(
+  'data/editData',
+  async ({ userId, taskName ,Oldname}) => {
+    console.log(userId);
+    console.log(taskName);
+    console.log(Oldname);
+    const response = await axios.post(
+      'http://localhost:8080/edit',
+      { name: taskName, USER_ID: userId,Oldname:Oldname },
+      { headers }
+    );
+    const data = response.data;
+    console.log(data);
+    return data;
+  }
+);
+const setError = (state, action) => {
+  state.status = 'rejected';
+  state.error = action.payload;
+};
+// Create a slice
+const updateSlice = createSlice({
+  name: 'data',
+  initialState: {
+    userTasks: [],
+    status: null,
+    error: null,
+  },
+  reducers: {},
+
+  extraReducers: {
+    // builder.addCase(fetchData.fulfilled, (state, action) => {
+    //   state.userTasks = action.payload; // Update userTasks with fetched data
+    // });
+    // [fetchData.pending]: (state) => {
+    //   state.status = 'loading';
+    //   state.error = null;
+    // },
+    [fetchData.fulfilled]: (state, action) => {
+      state.status = 'resolved';
+      state.userTasks = action.payload;
+    },
+    [fetchData.rejected]: setError,
+
+    [deleteData.fulfilled]: (state, action) => {
+      state.status = 'resolved';
+      state.userTasks = action.payload;
+    },
+    [deleteData.rejected]: setError,
+
+    [editData.fulfilled]: (state, action) => {
+      state.status = 'resolved';
+      state.userTasks = action.payload;
+    },
+    [editData.rejected]: setError,
+  },
+});
+
+export default updateSlice.reducer;

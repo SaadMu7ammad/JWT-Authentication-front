@@ -1,12 +1,41 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Card.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchData, deleteData,editData } from '../Redux/Slices/UpdateSlice';
 
 function Card({ data }) {
   // console.log(data)
   // const history = useHistory();
 
+  const dispatch = useDispatch();
+  let tasks = useSelector((state) => state.data.userTasks);
+
+  const handleDelete = async (taskId, name) => {
+    try {
+      const resultAction = await dispatch(
+        deleteData({ userId: taskId, taskName: name })
+      );
+      if (deleteData.fulfilled.match(resultAction)) {
+        console.log('Delete operation successful.');
+      }
+    } catch (error) {
+      console.log('Delete operation failed.');
+    }
+  };
+  const handleEdit = async (taskId, name,Oldname) => {
+    try {
+      const resultAction = await dispatch(
+        editData({ userId: taskId, taskName: name,Oldname:Oldname })
+      );
+      if (editData.fulfilled.match(resultAction)) {
+        console.log('edit operation successful.');
+      }
+    } catch (error) {
+      console.log('edit operation failed.');
+    }
+  };
   const navigate = useNavigate();
   const [temp, settemp] = useState([]);
   const accessToken = localStorage.getItem('accessToken');
@@ -32,26 +61,33 @@ function Card({ data }) {
       .querySelector('h3.card-title').textContent;
     // const taskVal=prompt()
     console.log(taskName);
-    try {
-      const result = await axios.post(
-        `http://localhost:8080/delete`,
-        { name: taskName, USER_ID: userId },
-        { headers }
-      );
-      console.log(result.data);
-      const newTasks = result.data;
-      showTasks();
-      if (result.data !== 'you are not authrized to delete other tasks') {
-        window.location.reload();
-        // navigate('/home');
-        // navigate('/home', { replace: true });
-      }
+    handleDelete(userId, taskName);
+    // try {
+    //   const result = await axios.post(
+    //     `http://localhost:8080/delete`,
+    //     { name: taskName, USER_ID: userId },
+    //     { headers }
+    //   );
+    //   console.log(result.data);
+    //   const newTasks = result.data;
+    //   showTasks();
 
-      console.log(newTasks);
-    } catch (err) {
-      console.log(err);
-    }
+    //   if (result.data !== 'you are not authrized to delete other tasks') {
+    //     // window.location.reload();
+    //     // navigate('/home');
+    //     // navigate('/home', { replace: true });
+    //   }
+
+    //   console.log(newTasks);
+    // } catch (err) {
+    //   console.log(err);
+    // }
   }
+  useEffect(() => {
+    dispatch(fetchData());
+    dispatch(deleteData());
+    dispatch(editData());
+  }, []);
   async function editTask(e) {
     const userId = e.target
       .closest('div.card')
@@ -59,38 +95,39 @@ function Card({ data }) {
     const taskName = e.target
       .closest('.card')
       .querySelector('h3.card-title').textContent;
-    const taskVal = prompt();
+    const newTaskVal = prompt();
     console.log(taskName);
-    console.log(taskVal);
-    if (taskVal) {
-      try {
-        const result = await axios.post(
-          `http://localhost:8080/edit`,
-          {
-            name: taskVal ? taskVal : taskName,
-            Oldname: taskName,
-            USER_ID: userId,
-          },
-          { headers }
-        );
-        console.log(result.data);
-        const newTasks = result.data;
-        showTasks();
-        if (result.data !== 'you are not authrized to edit other tasks') {
-          // window.location.reload();
-          // navigate('/home');
+    console.log(newTaskVal);
 
-          // history.location.pathname = '/home';
-          // history.replace(history.location.pathname); // Navigate to the same route
-          window.location.reload(); // Reload the page
-          // navigate('/home', { replace: true });
-        }
-        // window.location.reload();
-        console.log(newTasks);
-      } catch (err) {
-        console.log(err);
-      }
-    }
+    handleEdit(userId,newTaskVal,taskName)
+    // if (taskVal) {
+    //   try {
+    //     const result = await axios.post(
+    //       `http://localhost:8080/edit`,
+    //       {
+    //         name: taskVal ? taskVal : taskName,
+    //         Oldname: taskName,
+    //         USER_ID: userId,
+    //       },
+    //       { headers }
+    //     );
+    //     console.log(result.data);
+    //     const newTasks = result.data;
+    //     // showTasks();
+    //     if (result.data !== 'you are not authrized to edit other tasks') {
+    //       // window.location.reload();
+    //       // navigate('/home');
+    //       // history.location.pathname = '/home';
+    //       // history.replace(history.location.pathname); // Navigate to the same route
+    //       // window.location.reload(); // Reload the page
+    //       // navigate('/home', { replace: true });
+    //     }
+    //     // window.location.reload();
+    //     console.log(newTasks);
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // }
   }
   async function showTasks() {
     try {
