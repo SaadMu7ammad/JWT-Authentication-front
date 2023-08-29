@@ -15,6 +15,28 @@ export const fetchData = createAsyncThunk('data/fetchData', async () => {
   const data = await response.json();
   return data;
 });
+
+export const fetchDataUser = createAsyncThunk(
+  'data/fetchDataUser',
+  async () => {
+    const response = await axios.get('http://localhost:8080/home', { headers });
+    const data =  response.data;
+    return data;
+  }
+);
+export const addTask = createAsyncThunk(
+  'data/addTask',
+    async ({ valueTask }) => {
+      console.log('addd ttttttsks');
+    const response = await axios.post(
+      'http://localhost:8080/add',
+      { valueTask: valueTask },
+      { headers }
+    );
+    const data =response.data;
+    return data;
+  }
+);
 // export const deleteData = (userId, taskName) =>
 //   createAsyncThunk('data/deleteData', async () => {
 //     const response = await axios.post(
@@ -42,15 +64,30 @@ export const deleteData = createAsyncThunk(
     return data;
   }
 );
+export const deleteDataOne = createAsyncThunk(
+  'data/deleteDataOne',
+  async ({ userId, taskName }) => {
+    console.log(userId);
+    console.log(taskName);
+    const response = await axios.post(
+      'http://localhost:8080/deleteOne',
+      { name: taskName, USER_ID: userId },
+      { headers }
+    );
+    const data = response.data;
+    console.log(data);
+    return data;
+  }
+);
 export const editData = createAsyncThunk(
   'data/editData',
-  async ({ userId, taskName ,Oldname}) => {
+  async ({ userId, taskName, Oldname }) => {
     console.log(userId);
     console.log(taskName);
     console.log(Oldname);
     const response = await axios.post(
       'http://localhost:8080/edit',
-      { name: taskName, USER_ID: userId,Oldname:Oldname },
+      { name: taskName, USER_ID: userId, Oldname: Oldname },
       { headers }
     );
     const data = response.data;
@@ -67,6 +104,7 @@ const updateSlice = createSlice({
   name: 'data',
   initialState: {
     userTasks: [],
+    OneuserTasks: [],
     status: null,
     error: null,
   },
@@ -97,6 +135,26 @@ const updateSlice = createSlice({
       state.userTasks = action.payload;
     },
     [editData.rejected]: setError,
+
+    [deleteDataOne.fulfilled]: (state, action) => {
+      state.status = 'resolved';
+      state.OneuserTasks = action.payload;
+    },
+    [deleteDataOne.rejected]: setError,
+
+    [fetchDataUser.fulfilled]: (state, action) => {
+      state.status = 'resolved';
+        state.OneuserTasks = action.payload;
+        
+    },
+      [fetchDataUser.rejected]: setError,
+    
+
+    [addTask.fulfilled]: (state, action) => {
+      state.status = 'resolved';
+      state.OneuserTasks = action.payload;
+    },
+    [addTask.rejected]: setError,
   },
 });
 

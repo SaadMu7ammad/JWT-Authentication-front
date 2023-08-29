@@ -105,7 +105,7 @@ function All() {
       <div className="taskCards">
         {tasks.map((item, index) =>
           item.task.map((it, indx) => {
-            return <Card key={indx} data={[it.name, it.userName, it.id]} />;
+            return <Card key={indx} data={[it.name, it.userName, it.id,true]} />;
           })
         )}
       </div>
