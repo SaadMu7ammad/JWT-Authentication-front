@@ -84,7 +84,7 @@ function Home() {
     console.log('change saad here');
     // dispatch(addTask());
     dispatch(fetchDataUser());
-    dispatch(addTask());
+    // dispatch(addTask());
 
     // console.log(tasksOneUser);
     // dispatch(deleteDataOne());

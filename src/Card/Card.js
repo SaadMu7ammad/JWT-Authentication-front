@@ -3,7 +3,7 @@ import './Card.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchData, deleteData, editData,deleteDataOne, fetchDataUser, addTask } from '../Redux/Slices/UpdateSlice';
+import { fetchData, deleteData, editData,deleteDataOne, fetchDataUser, addTask, editDataOne } from '../Redux/Slices/UpdateSlice';
 
 function Card({ data }) {
   // console.log(data)
@@ -42,6 +42,18 @@ function Card({ data }) {
         editData({ userId: taskId, taskName: name, Oldname: Oldname })
       );
       if (editData.fulfilled.match(resultAction)) {
+        console.log('edit operation successful.');
+      }
+    } catch (error) {
+      console.log('edit operation failed.');
+    }
+  };
+  const handleEditOne = async (taskId, name, Oldname) => {
+    try {
+      const resultAction = await dispatch(
+        editDataOne({ userId: taskId, taskName: name, Oldname: Oldname })
+      );
+      if (editDataOne.fulfilled.match(resultAction)) {
         console.log('edit operation successful.');
       }
     } catch (error) {
@@ -111,13 +123,30 @@ function Card({ data }) {
     handleDeleteOne(userId, taskName);
    
   }
+  async function editTaskOne(e) {
+    // console.log(
+    //   e.target.closest('div.card').querySelector('input[type="hidden"]').value
+    // );
+    const userId = e.target
+      .closest('div.card')
+      .querySelector('input[type="hidden"]').value;
+    console.log(userId);
+    const taskName = e.target
+      .closest('.card')
+      .querySelector('h3.card-title').textContent;
+    const taskVal=prompt()
+    console.log(taskName);
+    handleEditOne(userId,taskVal, taskName);
+   
+  }
   useEffect(() => {
     dispatch(fetchData());
     dispatch(deleteData());
     dispatch(editData());
-    dispatch(deleteDataOne());
     dispatch(fetchDataUser());
     dispatch(addTask());
+    dispatch(deleteDataOne());
+    dispatch(editDataOne());
   }, []);
   async function editTask(e) {
     const userId = e.target
@@ -186,7 +215,7 @@ function Card({ data }) {
         </div>
       ) : (
         <div className="card-buttons">
-          <button className="edit-button" onClick={editTask}>
+          <button className="edit-button" onClick={editTaskOne}>
             Edit
           </button>
           <button className="delete-button" onClick={deleteTaskOne}>

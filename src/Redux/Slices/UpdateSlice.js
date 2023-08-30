@@ -19,21 +19,29 @@ export const fetchData = createAsyncThunk('data/fetchData', async () => {
 export const fetchDataUser = createAsyncThunk(
   'data/fetchDataUser',
   async () => {
-    const response = await axios.get('http://localhost:8080/home', { headers });
-    const data =  response.data;
+    const response = await axios.get('http://localhost:8080/home', {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+      },
+    });
+    const data = response.data;
     return data;
   }
 );
 export const addTask = createAsyncThunk(
   'data/addTask',
-    async ({ valueTask }) => {
-      console.log('addd ttttttsks');
+  async ({ valueTask }) => {
+    console.log('addd ttttttsks');
     const response = await axios.post(
       'http://localhost:8080/add',
       { valueTask: valueTask },
-      { headers }
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+      }
     );
-    const data =response.data;
+    const data = response.data;
     return data;
   }
 );
@@ -57,7 +65,11 @@ export const deleteData = createAsyncThunk(
     const response = await axios.post(
       'http://localhost:8080/delete',
       { name: taskName, USER_ID: userId },
-      { headers }
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+      }
     );
     const data = response.data;
     console.log(data);
@@ -72,7 +84,11 @@ export const deleteDataOne = createAsyncThunk(
     const response = await axios.post(
       'http://localhost:8080/deleteOne',
       { name: taskName, USER_ID: userId },
-      { headers }
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+      }
     );
     const data = response.data;
     console.log(data);
@@ -88,13 +104,46 @@ export const editData = createAsyncThunk(
     const response = await axios.post(
       'http://localhost:8080/edit',
       { name: taskName, USER_ID: userId, Oldname: Oldname },
-      { headers }
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+      }
     );
     const data = response.data;
     console.log(data);
     return data;
   }
 );
+// handleEditOne(userId, taskName,taskVal);
+
+export const editDataOne = createAsyncThunk(
+  'data/editDataOne',
+  // { userId: taskId, taskName: name, Oldname: Oldname }
+  async ({ userId, taskName, Oldname }) => {
+    // console.log(userId);
+    // console.log(taskName);
+    // console.log(Oldname);
+    const response = await axios.post(
+      'http://localhost:8080/editOne',
+      { name: taskName, USER_ID: userId, Oldname: Oldname },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+      }
+    );
+    const data = response.data;
+    console.log(data);
+    return data;
+  }
+);
+
+export const clearLogOut = () => (dispatch) => {
+  // Reset user-specific data to initial state
+  dispatch(updateSlice.actions.clearOneuserTasks());
+  localStorage.removeItem('accessToken');
+};
 const setError = (state, action) => {
   state.status = 'rejected';
   state.error = action.payload;
@@ -108,7 +157,13 @@ const updateSlice = createSlice({
     status: null,
     error: null,
   },
-  reducers: {},
+  reducers: {
+    clearOneuserTasks: (state) => {
+      state.OneuserTasks = [];
+      state.status = null;
+      state.error = null;
+    },
+  },
 
   extraReducers: {
     // builder.addCase(fetchData.fulfilled, (state, action) => {
@@ -144,18 +199,23 @@ const updateSlice = createSlice({
 
     [fetchDataUser.fulfilled]: (state, action) => {
       state.status = 'resolved';
-        state.OneuserTasks = action.payload;
-        
+      state.OneuserTasks = action.payload;
     },
-      [fetchDataUser.rejected]: setError,
-    
+    [fetchDataUser.rejected]: setError,
 
     [addTask.fulfilled]: (state, action) => {
       state.status = 'resolved';
       state.OneuserTasks = action.payload;
     },
     [addTask.rejected]: setError,
+
+    [editDataOne.fulfilled]: (state, action) => {
+      state.status = 'resolved';
+      state.OneuserTasks = action.payload;
+    },
+    [editDataOne.rejected]: setError,
   },
 });
+export const { clearOneuserTasks } = updateSlice.actions;
 
 export default updateSlice.reducer;

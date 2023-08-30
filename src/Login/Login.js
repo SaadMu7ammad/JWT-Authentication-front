@@ -1,12 +1,14 @@
 import React from 'react';
 import './Login.css';
 import { useNavigate } from 'react-router-dom';
-
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 import { useState } from 'react';
+import { fetchDataUser } from '../Redux/Slices/UpdateSlice';
 function Login() {
+  const dispatch=useDispatch()
   const [email, setEmail] = useState('');
   const [err, setErr] = useState('none');
   const [password, setPassword] = useState('');
@@ -27,8 +29,8 @@ function Login() {
         if (result.data.status === true) {
           // navigate('/home');
           localStorage.setItem('accessToken', result.data.result.accessToken);
-
           navigate('/home'); // Pass accessToken as state
+          dispatch(fetchDataUser())
 
         } else {
           // navigate('/login');
