@@ -22,13 +22,9 @@ function Register() {
           if (result.data === true) {
             navigate('/login');
           } else {
-            // navigate('/Register');
-
             setErr('block');
             setMsg('email is used');
           }
-
-          //   res.json(res)
         })
         .catch((err) => {
           console.log(err);
@@ -39,7 +35,6 @@ function Register() {
     <div className="container">
       <div className="card">
         <h2 style={{ display: err, color: 'red' }}>{msg}</h2>
-
         <h2>Register Form</h2>
         <form method="post">
           <label htmlFor="fullname">Full Name</label>
@@ -51,7 +46,6 @@ function Register() {
             name="fullname"
             placeholder="Enter your full name"
           />
-
           <label htmlFor="email">Email</label>
           <input
             type="text"
@@ -61,7 +55,6 @@ function Register() {
             }}
             placeholder="Enter your email"
           />
-
           <label htmlFor="new-password">New Password</label>
           <input
             type="text"
@@ -71,7 +64,6 @@ function Register() {
             }}
             placeholder="Enter your new password"
           />
-
           <button type="submit" onClick={checkRegister}>
             Register
           </button>

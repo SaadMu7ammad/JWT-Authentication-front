@@ -21,19 +21,12 @@ function Login() {
         password,
       })
       .then((result) => {
-        // console.log(result.data.accessToken);
-        console.log(result.data.result);
-        console.log(result.data.result.accessToken);
-        // console.log('after login in front');
-        // console.log(location);
         if (result.data.status === true) {
-          // navigate('/home');
           localStorage.setItem('accessToken', result.data.result.accessToken);
           navigate('/home'); // Pass accessToken as state
           dispatch(fetchDataUser())
 
         } else {
-          // navigate('/login');
           setErr('block');
         }
       })

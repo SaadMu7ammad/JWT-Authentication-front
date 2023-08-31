@@ -1,17 +1,18 @@
-// dataSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const accessToken = localStorage.getItem('accessToken');
+// const accessToken = localStorage.getItem('accessToken');
 
-const headers = {
-  // Define your headers here
-  Authorization: `Bearer ${accessToken}`,
-  // Add other headers if needed
-};
+// const headers = {
+//   Authorization: `Bearer ${accessToken}`,
+// };
 // Create an async thunk for fetching data
 export const fetchData = createAsyncThunk('data/fetchData', async () => {
-  const response = await fetch('http://localhost:8080/all', { headers });
+  const response = await fetch('http://localhost:8080/all', {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+    },
+  });
   const data = await response.json();
   return data;
 });
@@ -31,7 +32,6 @@ export const fetchDataUser = createAsyncThunk(
 export const addTask = createAsyncThunk(
   'data/addTask',
   async ({ valueTask }) => {
-    console.log('addd ttttttsks');
     const response = await axios.post(
       'http://localhost:8080/add',
       { valueTask: valueTask },
@@ -45,23 +45,11 @@ export const addTask = createAsyncThunk(
     return data;
   }
 );
-// export const deleteData = (userId, taskName) =>
-//   createAsyncThunk('data/deleteData', async () => {
-//     const response = await axios.post(
-//       'http://localhost:8080/delete',
-//       { name: taskName, USER_ID: userId },
-//       { headers }
-//     );
-//     const data = await response.json();
-//     console.log(data);
-//     return data;
-//   });
 
 export const deleteData = createAsyncThunk(
   'data/deleteData',
   async ({ userId, taskName }) => {
-    console.log(userId);
-    console.log(taskName);
+
     const response = await axios.post(
       'http://localhost:8080/delete',
       { name: taskName, USER_ID: userId },
@@ -72,15 +60,12 @@ export const deleteData = createAsyncThunk(
       }
     );
     const data = response.data;
-    console.log(data);
     return data;
   }
 );
 export const deleteDataOne = createAsyncThunk(
   'data/deleteDataOne',
   async ({ userId, taskName }) => {
-    console.log(userId);
-    console.log(taskName);
     const response = await axios.post(
       'http://localhost:8080/deleteOne',
       { name: taskName, USER_ID: userId },
@@ -91,16 +76,12 @@ export const deleteDataOne = createAsyncThunk(
       }
     );
     const data = response.data;
-    console.log(data);
     return data;
   }
 );
 export const editData = createAsyncThunk(
   'data/editData',
   async ({ userId, taskName, Oldname }) => {
-    console.log(userId);
-    console.log(taskName);
-    console.log(Oldname);
     const response = await axios.post(
       'http://localhost:8080/edit',
       { name: taskName, USER_ID: userId, Oldname: Oldname },
@@ -111,19 +92,13 @@ export const editData = createAsyncThunk(
       }
     );
     const data = response.data;
-    console.log(data);
     return data;
   }
 );
-// handleEditOne(userId, taskName,taskVal);
 
 export const editDataOne = createAsyncThunk(
   'data/editDataOne',
-  // { userId: taskId, taskName: name, Oldname: Oldname }
   async ({ userId, taskName, Oldname }) => {
-    // console.log(userId);
-    // console.log(taskName);
-    // console.log(Oldname);
     const response = await axios.post(
       'http://localhost:8080/editOne',
       { name: taskName, USER_ID: userId, Oldname: Oldname },
@@ -134,21 +109,18 @@ export const editDataOne = createAsyncThunk(
       }
     );
     const data = response.data;
-    console.log(data);
     return data;
   }
 );
 
-export const clearLogOut = () => (dispatch) => {
-  // Reset user-specific data to initial state
-  dispatch(updateSlice.actions.clearOneuserTasks());
-  localStorage.removeItem('accessToken');
-};
+// export const clearLogOut = () => (dispatch) => {
+//   dispatch(updateSlice.actions.clearOneuserTasks());
+//   localStorage.removeItem('accessToken');
+// };
 const setError = (state, action) => {
   state.status = 'rejected';
   state.error = action.payload;
 };
-// Create a slice
 const updateSlice = createSlice({
   name: 'data',
   initialState: {
@@ -166,13 +138,7 @@ const updateSlice = createSlice({
   },
 
   extraReducers: {
-    // builder.addCase(fetchData.fulfilled, (state, action) => {
-    //   state.userTasks = action.payload; // Update userTasks with fetched data
-    // });
-    // [fetchData.pending]: (state) => {
-    //   state.status = 'loading';
-    //   state.error = null;
-    // },
+  
     [fetchData.fulfilled]: (state, action) => {
       state.status = 'resolved';
       state.userTasks = action.payload;
