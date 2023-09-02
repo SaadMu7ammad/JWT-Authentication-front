@@ -4,7 +4,7 @@ import axios from 'axios';
 import Nav from '../Nav/Nav';
 import openSocket from 'socket.io-client';
 import '../Card/Card.css';
-import { fetchData } from '../Redux/Slices/UpdateSlice';
+import { fetchData, fetchDataUser } from '../Redux/Slices/UpdateSlice';
 import { useDispatch, useSelector } from 'react-redux';
 function All() {
   // const [taskVal, setTask] = useState('');
@@ -16,7 +16,7 @@ function All() {
     const socket = openSocket('http://localhost:8080'); // Connect to the Socket.IO server
 
     socket.on('newTask', (newTask) => {
-      console.log('soookkkkt');
+      console.log('socket at All');
       console.log(newTask.task);
       if (newTask.action === 'add') {
         //   // Listen for a new task event from the server
@@ -24,6 +24,7 @@ function All() {
         // tasks.push(newTask.task);
         settemp([...temp], newTask.task);
         dispatch(fetchData());
+        dispatch(fetchDataUser());
       }
       //   settemp((prevTemp) => [...prevTemp, newTask]);
     });

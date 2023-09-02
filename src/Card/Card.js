@@ -9,6 +9,7 @@ import {
   deleteDataOne,
   editDataOne,
   fetchData,
+  fetchDataUser,
 } from '../Redux/Slices/UpdateSlice';
 
 function Card({ data }) {
@@ -73,7 +74,7 @@ function Card({ data }) {
     const taskName = e.target
       .closest('.card')
       .querySelector('h3.card-title').textContent;
-    console.log(taskName);
+    // console.log(taskName);
     handleDelete(userId, taskName);
   }
   async function deleteTaskOne(e) {
@@ -83,7 +84,7 @@ function Card({ data }) {
     const taskName = e.target
       .closest('.card')
       .querySelector('h3.card-title').textContent;
-    console.log(taskName);
+    // console.log(taskName);
     handleDeleteOne(userId, taskName);
   }
   async function editTaskOne(e) {
@@ -112,25 +113,19 @@ function Card({ data }) {
     const socket = openSocket('http://localhost:8080'); // Connect to the Socket.IO server
 
     socket.on('newTask', (newTask) => {
-      console.log('soookkkkt');
+      console.log('socket at card');
       if (newTask.action === 'delete') {
-        //   // Listen for a new task event from the server
-        //   console.log(newTask);
-        // tasks.push(newTask.task);
-        settemp([...newTask.task]);
-        console.log([...newTask.task]);
-        dispatch(fetchData());
-      }else   if (newTask.action === 'edit') {
-        //   // Listen for a new task event from the server
-        //   console.log(newTask);
-        // tasks.push(newTask.task);
         settemp([...newTask.task]);
         // console.log([...newTask.task]);
+        dispatch(fetchDataUser());
+        dispatch(fetchData());
+
+      }else if (newTask.action === 'edit') {
+        settemp([...newTask.task]);
+        dispatch(fetchDataUser());
         dispatch(fetchData());
       }
-      //   settemp((prevTemp) => [...prevTemp, newTask]);
     });
-    // dispatch(fetchData());
 
     console.log('all page useEffect');
   }, []);
