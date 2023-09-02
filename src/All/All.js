@@ -9,29 +9,37 @@ import { useDispatch, useSelector } from 'react-redux';
 function All() {
   // const [taskVal, setTask] = useState('');
   let tasks = useSelector((state) => state.data.userTasks);
-  // const [temp, settemp] = useState([]);
+  const [temp, settemp] = useState([tasks]);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // const socket = openSocket('http://localhost:8080'); // Connect to the Socket.IO server
+    const socket = openSocket('http://localhost:8080'); // Connect to the Socket.IO server
 
-    // socket.on('newTask', (newTask) => {
-    //   // Listen for a new task event from the server
-    //   console.log(newTask);
-    //   settemp((prevTemp) => [...prevTemp, newTask]);
-    // });
+    socket.on('newTask', (newTask) => {
+      console.log('soookkkkt');
+      console.log(newTask.task);
+      if (newTask.action === 'add') {
+        //   // Listen for a new task event from the server
+        //   console.log(newTask);
+        // tasks.push(newTask.task);
+        settemp([...temp], newTask.task);
+        dispatch(fetchData());
+      }
+      //   settemp((prevTemp) => [...prevTemp, newTask]);
+    });
     dispatch(fetchData());
 
     console.log('all page useEffect');
-    
-  }, [dispatch]);
-  
+  }, []);
+
   return (
     <div>
       <div className="taskCards">
         {tasks.map((item, index) =>
           item.task.map((it, indx) => {
-            return <Card key={indx} data={[it.name, it.userName, it.id,true]} />;
+            return (
+              <Card key={indx} data={[it.name, it.userName, it.id, true]} />
+            );
           })
         )}
       </div>
