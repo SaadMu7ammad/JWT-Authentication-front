@@ -17,16 +17,15 @@ function All() {
 
     socket.on('newTask', (newTask) => {
       console.log('socket at All');
-      console.log(newTask.task);
+      // console.log(newTask.task);
       if (newTask.action === 'add') {
         //   // Listen for a new task event from the server
         //   console.log(newTask);
         // tasks.push(newTask.task);
         settemp([...temp], newTask.task);
-        dispatch(fetchData());
-        dispatch(fetchDataUser());
+        dispatch(fetchData());//only i want to update the all page 
+        // dispatch(fetchDataUser());
       }
-      //   settemp((prevTemp) => [...prevTemp, newTask]);
     });
     dispatch(fetchData());
 
