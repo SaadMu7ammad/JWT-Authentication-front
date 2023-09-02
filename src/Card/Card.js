@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import './Card.css';
 import { useDispatch, useSelector } from 'react-redux';
+import openSocket from 'socket.io-client';
+
 import {
   deleteData,
   editData,
   deleteDataOne,
   editDataOne,
+  fetchData,
 } from '../Redux/Slices/UpdateSlice';
 
 function Card({ data }) {
+  let tasks = useSelector((state) => state.data.userTasks);
+  const [temp, settemp] = useState([tasks]);
   const dispatch = useDispatch();
   // let tasks = useSelector((state) => state.data.userTasks);
 
@@ -103,6 +108,32 @@ function Card({ data }) {
     handleEdit(userId, newTaskVal, taskName);
   }
 
+  useEffect(() => {
+    const socket = openSocket('http://localhost:8080'); // Connect to the Socket.IO server
+
+    socket.on('newTask', (newTask) => {
+      console.log('soookkkkt');
+      if (newTask.action === 'delete') {
+        //   // Listen for a new task event from the server
+        //   console.log(newTask);
+        // tasks.push(newTask.task);
+        settemp([...newTask.task]);
+        console.log([...newTask.task]);
+        dispatch(fetchData());
+      }else   if (newTask.action === 'edit') {
+        //   // Listen for a new task event from the server
+        //   console.log(newTask);
+        // tasks.push(newTask.task);
+        settemp([...newTask.task]);
+        // console.log([...newTask.task]);
+        dispatch(fetchData());
+      }
+      //   settemp((prevTemp) => [...prevTemp, newTask]);
+    });
+    // dispatch(fetchData());
+
+    console.log('all page useEffect');
+  }, []);
   return (
     <div className="card">
       <h3 className="card-title">{data[0]}</h3>
